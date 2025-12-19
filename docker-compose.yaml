@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: wp_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: strongpassword
+      MYSQL_ROOT_PASSWORD: rootstrongpassword
+    volumes:
+      - ./db_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+  wordpress:
+    image: wordpress:php8.2-apache
+    container_name: wp_app
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "127.0.0.1:8081:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: strongpassword
+    volumes:
+      - ./wp_data:/var/www/html
