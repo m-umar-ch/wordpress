@@ -32,3 +32,19 @@ sudo systemctl reload nginx
 
 ```
 
+
+# To get ssl certificate
+
+- before installing ssl certificate go to admin panel and change the `WordPress Address (URL)` and `Site Address (URL)` of website to https in the site settings of wordpress. FYI it will cause your site to stop
+
+
+```bash
+sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+```
+
+### If not certbot not already installed
+```bash
+sudo apt update
+sudo apt install certbot python3-certbot-nginx -y
+```
+
